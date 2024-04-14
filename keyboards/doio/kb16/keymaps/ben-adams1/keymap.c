@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*  Row:    0         1        2        3        4        */
     [_4] = LAYOUT(
-                KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                KC_TRNS,  KC_TAB, LSFT(KC_TAB), TO(_1), KC_TRNS,
 				RGB_RMOD, RGB_MOD, EE_CLR,  TO(_1),  KC_TRNS,
                 RGB_SPD,  RGB_SPI, RGB_SAD, RGB_SAI, KC_TRNS,
                 RGB_HUD,  RGB_HUI, RGB_VAD, RGB_VAI
