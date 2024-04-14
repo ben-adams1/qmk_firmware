@@ -21,24 +21,25 @@
 #include "lib/layer_status/layer_status.h"
 
 // I added this so that I could extend the timeout of the OLED display
-#include "quantum.h"
-#include "timer.h"
-static uint32_t oled_dim_timer = 0;
-
-void matrix_scan_user(void) {
-    if (oled_dim_timer != 0 && timer_elapsed(oled_dim_timer) > 300000) { // 300000 ms = 5 minutes
-        oled_off();
-        oled_dim_timer = 0; // Reset the timer
-    }
-}
-
-void suspend_power_down_user(void) {
-    #ifdef OLED_ENABLE
-    oled_set_brightness(127); // Set brightness to about 50%
-    oled_dim_timer = timer_read(); // Start the dimming timer
-    #endif
-    // Add other suspend behaviors if needed
-}
+// It didn't work, so I'm commenting it out 
+// #include "quantum.h"
+// #include "timer.h"
+// static uint32_t oled_dim_timer = 0;
+// 
+// void matrix_scan_user(void) {
+//     if (oled_dim_timer != 0 && timer_elapsed(oled_dim_timer) > 300000) { // 300000 ms = 5 minutes
+//         oled_off();
+//         oled_dim_timer = 0; // Reset the timer
+//     }
+// }
+// 
+// void suspend_power_down_user(void) {
+//     #ifdef OLED_ENABLE
+//     oled_set_brightness(127); // Set brightness to about 50%
+//     oled_dim_timer = timer_read(); // Start the dimming timer
+//     #endif
+//     // Add other suspend behaviors if needed
+// }
 
 enum layer_names {
     _1,
