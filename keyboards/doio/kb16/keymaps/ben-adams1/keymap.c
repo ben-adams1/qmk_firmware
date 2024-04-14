@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*  Row:    0           1                 2              3              4     */
     [_2] = LAYOUT(
                 KC_TRNS,    KC_TRNS,          KC_TRNS,       TO(_1),        KC_TRNS,
-                LCTL(KC_P), TO(_3),           LALT(KC_K),    LALT(KC_J),    KC_TRNS,
+                TO(_3),     LCTL(KC_P),       LALT(KC_K),    LALT(KC_J),    KC_TRNS,
                 LSG(KC_S),  TOGGLE_HEADING_2, LCTL(KC_LBRC), LCTL(KC_RBRC), KC_TRNS,
                 KC_TRNS,    KC_TRNS,          KC_TRNS,       KC_TRNS
             ),
@@ -104,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*  Row:    0         1        2        3        4        */
     [_4] = LAYOUT(
                 KC_TRNS,  KC_TAB, LSFT(KC_TAB), TO(_1), KC_TRNS,
-				RGB_RMOD, RGB_MOD, EE_CLR,  TO(_1),  KC_TRNS,
+				RGB_RMOD, RGB_MOD, EE_CLR,  QK_BOOT,  KC_TRNS,
                 RGB_SPD,  RGB_SPI, RGB_SAD, RGB_SAI, KC_TRNS,
                 RGB_HUD,  RGB_HUI, RGB_VAD, RGB_VAI
             ),
