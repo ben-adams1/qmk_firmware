@@ -80,8 +80,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*  Column: 0               1           2             3             4       */
     [_1] = LAYOUT(
                 LALT_T(KC_ESC), KC_TAB,     LSFT(KC_TAB), TO(_2),       RGB_TOG,
-                RCS(KC_N),      RCS(KC_T),  LCTL(KC_W),   LCTL(KC_T),   RSG(KC_A),
-                LCAG(KC_V),     LCTL(KC_N), RCS(KC_TAB),  LCTL(KC_TAB), KC_MUTE,
+                RCS(KC_N),      RCS(KC_T),  LCTL(KC_N),   LCTL(KC_T),   RSG(KC_A),
+                LCAG(KC_V),     LCTL(KC_W), RCS(KC_TAB),  LCTL(KC_TAB), KC_MUTE,
                 LCTL(KC_C),     LCTL(KC_X), LGUI(KC_V),   LCTL(KC_V)
             ),
 
