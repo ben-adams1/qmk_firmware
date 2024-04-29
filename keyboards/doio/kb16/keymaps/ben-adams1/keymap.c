@@ -50,18 +50,60 @@ enum layer_names {
 
 enum custom_keycodes {
     TOGGLE_HEADING_2 = SAFE_RANGE,
+	CONTROL_OR_COPY,
+	SHIFT_OR_CUT,
+	NOTION_CALLOUT,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case TOGGLE_HEADING_2:
-        if (record->event.pressed) {
-            SEND_STRING("> ## ");
-        }
-        return false; // Skip all further processing of this key
+    static uint16_t control_timer;
+	static uint16_t shift_timer;
+	
+	switch (keycode) {
+        case TOGGLE_HEADING_2:
+            if (record->event.pressed) {
+                SEND_STRING("> ## ");
+            }
+            return false; // Skip all further processing of this key
+
+        case CONTROL_OR_COPY:
+            if (record->event.pressed) {
+                // Key pressed
+                control_timer = timer_read(); // Start the timer
+                register_mods(MOD_BIT(KC_LCTL)); // Register Left Control as being held down
+            } else {
+                // Key released
+                unregister_mods(MOD_BIT(KC_LCTL)); // Unregister Left Control
+                if (timer_elapsed(control_timer) < TAPPING_TERM) {
+                    // If the key was released before the tapping term expires, send Control-C
+                    tap_code16(LCTL(KC_C));
+                }
+            }
+            return false; // Skip all further processing of this key
+
+        case SHIFT_OR_CUT:
+            if (record->event.pressed) {
+                // Key pressed
+                shift_timer = timer_read(); // Start the timer
+                register_mods(MOD_BIT(KC_LSFT)); // Register Left Shift as being held down
+            } else {
+                // Key released
+                unregister_mods(MOD_BIT(KC_LSFT)); // Unregister Left Shift
+                if (timer_elapsed(shift_timer) < TAPPING_TERM) {
+                    // If the key was released before the tapping term expires, send Control-X
+                    tap_code16(LCTL(KC_X));
+                }
+            }
+            return false; // Skip all further processing of this key
+
+        case NOTION_CALLOUT:
+            if (record->event.pressed) {
+                SEND_STRING("/callout\n");
+            }
+            return false; // Skip all further processing of this key
     }
     return true; // Process all other keys normally
-};
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -76,38 +118,41 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        │   │   │   │   │
        └───┴───┴───┴───┘
 */
-
-    /*  Column: 0               1           2             3             4       */
+	/* Layer 1 (Windows)                                                                   */
+    /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_1] = LAYOUT(
-                LALT_T(KC_ESC), KC_TAB,     LSFT(KC_TAB), TO(_2),       RGB_TOG,
-                RCS(KC_N),      RCS(KC_T),  LCTL(KC_N),   LCTL(KC_T),   RSG(KC_A),
-                LCAG(KC_V),     LCTL(KC_W), RCS(KC_TAB),  LCTL(KC_TAB), KC_MUTE,
-                LCTL(KC_C),     LCTL(KC_X), LGUI(KC_V),   LCTL(KC_V)
-            ),
+		LALT_T(KC_ESC),  KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_4),
+		LSG(KC_S),       KC_NO,            RCS(KC_T),        LCTL(KC_T),    TO(_2),
+		LCAG(KC_V),      RCS(KC_TAB),      LCTL(KC_W),       LCTL(KC_TAB),  KC_MUTE,
+		CONTROL_OR_COPY, SHIFT_OR_CUT,     LGUI(KC_V),       LCTL(KC_V)
+	),
 
-    /*  Row:    0           1                 2              3              4     */
+    /* Layer 2 (Numpad)                                                                    */
+    /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_2] = LAYOUT(
-                KC_TRNS,    KC_TRNS,          KC_TRNS,       TO(_1),        KC_TRNS,
-                TO(_3),     LCTL(KC_P),       LALT(KC_K),    LALT(KC_J),    KC_TRNS,
-                LSG(KC_S),  TOGGLE_HEADING_2, LCTL(KC_LBRC), LCTL(KC_RBRC), KC_TRNS,
-                KC_TRNS,    KC_TRNS,          KC_TRNS,       KC_TRNS
-            ),
+		KC_TRNS,         KC_7,             KC_8,             KC_9,          TO(_1),
+		KC_TRNS,         KC_4,             KC_5,             KC_6,          TO(_3),
+		KC_TRNS,         KC_1,             KC_2,             KC_3,          KC_TRNS,
+		KC_TRNS,         KC_0,             KC_TAB,           KC_ENT
+	),
 
-    /*  Row:    0        1     2       3      4     */
+    /* Layer 3 (Notion)                                                                    */
+    /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_3] = LAYOUT(
-                KC_TRNS, KC_7, KC_8,   KC_9,  KC_TRNS,
-                TO(_4),  KC_4, KC_5,   KC_6,  KC_TRNS,
-                TO(_2),  KC_1, KC_2,   KC_3,  KC_TRNS,
-                TO(_1),  KC_0, KC_TAB, KC_ENT
-            ),
+		KC_TRNS,         KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_2),
+		KC_TRNS,         LALT(KC_K),       LCTL(KC_P),       LALT(KC_J),    TO(_4),
+		KC_TRNS,         LCTL(KC_LBRC),    TOGGLE_HEADING_2, LCTL(KC_RBRC), KC_TRNS,
+		KC_TRNS,         SHIFT_OR_CUT,     LGUI(KC_V),       LCTL(KC_V)
+	),
 
-    /*  Row:    0         1        2        3        4        */
+    /* Layer 4 (RGB Customizations)                                                        */
+    /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_4] = LAYOUT(
-                KC_TRNS,  KC_TAB, LSFT(KC_TAB), TO(_1), KC_TRNS,
-				RGB_RMOD, RGB_MOD, EE_CLR,  QK_BOOT,  KC_TRNS,
-                RGB_SPD,  RGB_SPI, RGB_SAD, RGB_SAI, KC_TRNS,
-                RGB_HUD,  RGB_HUI, RGB_VAD, RGB_VAI
-            ),
+		KC_TRNS,         KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_3),
+		RGB_RMOD,        RGB_MOD,          EE_CLR,           QK_BOOT,       TO(_1),
+		RGB_SPD,         RGB_SPI,          RGB_SAD,          RGB_SAI,       KC_TRNS,
+		RGB_HUD,         RGB_HUI,          RGB_VAD,          RGB_VAI
+	),
 };
 
 #ifdef OLED_ENABLE
@@ -119,6 +164,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef ENCODER_MAP_ENABLE
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+	/* Rotary Encoders (dials)                                                                                    */
+	/*       Top-left                          Top-right                         Bottom                           */
+	/* Functions (same for every layer due to use of KC_TRNS on layers 2-4)                                       */
+	/*       Mouse left, mouse right           Mouse down, mouse up              Speaker volume down, up          */
     [_1] = { ENCODER_CCW_CW(KC_MS_L, KC_MS_R), ENCODER_CCW_CW(KC_MS_D, KC_MS_U), ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [_2] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [_3] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
