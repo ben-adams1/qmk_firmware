@@ -15,6 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
+
+/* Last Edit 
+
+                     May 13, 2024
+
+*/
+
+
+
+
 #include QMK_KEYBOARD_H
 
 // OLED animation
@@ -121,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	/* Layer 1 (Windows)                                                                   */
     /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_1] = LAYOUT(
-		LALT_T(KC_ESC),  KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_4),
+		KC_ESC,          KC_LALT,          KC_LSFT,          KC_TAB,        TO(_4),
 		LSG(KC_S),       KC_NO,            RCS(KC_T),        LCTL(KC_T),    TO(_2),
 		LCAG(KC_V),      RCS(KC_TAB),      LCTL(KC_W),       LCTL(KC_TAB),  KC_MUTE,
 		CONTROL_OR_COPY, SHIFT_OR_CUT,     LGUI(KC_V),       LCTL(KC_V)
@@ -130,28 +142,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Layer 2 (Numpad)                                                                    */
     /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_2] = LAYOUT(
-		KC_TRNS,         KC_7,             KC_8,             KC_9,          TO(_1),
-		KC_TRNS,         KC_4,             KC_5,             KC_6,          TO(_3),
-		KC_TRNS,         KC_1,             KC_2,             KC_3,          KC_TRNS,
-		KC_TRNS,         KC_0,             KC_TAB,           KC_ENT
+		KC_ESC,          KC_7,             KC_8,             KC_9,          TO(_1),
+		LSG(KC_S),       KC_4,             KC_5,             KC_6,          TO(_3),
+		LCAG(KC_V),      KC_1,             KC_2,             KC_3,          KC_TRNS,
+		CONTROL_OR_COPY, KC_0,             KC_ENT,           LCTL(KC_V)
 	),
 
-    /* Layer 3 (Notion)                                                                    */
+    /* Layer 3 (RGB Customizations)                                                        */
     /*  Column: 1        2                 3                 4              5 (push dial)  */
     [_3] = LAYOUT(
-		KC_TRNS,         KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_2),
-		KC_TRNS,         LALT(KC_K),       LCTL(KC_P),       LALT(KC_J),    TO(_4),
-		KC_TRNS,         LCTL(KC_LBRC),    TOGGLE_HEADING_2, LCTL(KC_RBRC), KC_TRNS,
-		KC_TRNS,         SHIFT_OR_CUT,     LGUI(KC_V),       LCTL(KC_V)
-	),
-
-    /* Layer 4 (RGB Customizations)                                                        */
-    /*  Column: 1        2                 3                 4              5 (push dial)  */
-    [_4] = LAYOUT(
-		KC_TRNS,         KC_TAB,           LSFT(KC_TAB),     KC_NO,         TO(_3),
-		RGB_RMOD,        RGB_MOD,          EE_CLR,           QK_BOOT,       TO(_1),
+		KC_ESC,          KC_LALT,          KC_LSFT,          KC_TAB,        TO(_2),
+		RGB_RMOD,        RGB_MOD,          EE_CLR,           QK_BOOT,       TO(_4),
 		RGB_SPD,         RGB_SPI,          RGB_SAD,          RGB_SAI,       KC_TRNS,
 		RGB_HUD,         RGB_HUI,          RGB_VAD,          RGB_VAI
+	),
+
+    /* Layer 4 (Notion)                                                                    */
+    /*  Column: 1        2                 3                 4              5 (push dial)  */
+    [_4] = LAYOUT(
+		KC_ESC,          KC_LALT,          KC_LSFT,          KC_TAB,        TO(_3),
+		KC_TRNS,         LALT(KC_K),       NOTION_CALLOUT,   LALT(KC_J),    TO(_1),
+		KC_TRNS,         LCTL(KC_LBRC),    TOGGLE_HEADING_2, LCTL(KC_RBRC), KC_TRNS,
+		CONTROL_OR_COPY, SHIFT_OR_CUT,     LGUI(KC_V),       LCTL(KC_V)
 	),
 };
 
